@@ -1,10 +1,11 @@
+# BuildFiles
 src/__pycache__/
-*.xlsx
 build
 dist
 *.spec
 
-# ParserFolders
+# ParserFiles
+*.xlsx
 input/
 output/
-
+config.toml

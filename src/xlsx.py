@@ -4,45 +4,48 @@ import time
 import sys
 import os
 
-from parser import parse_value_by_title, parse_all_pairs
-title_text = 'Способ осуществления закупки'
 
 
-def start_parser(input_file: str, output_file: str = None):
-    # Загружаем файл
+def xlsx_info(input_file: str):
     wb = load_workbook(input_file)
     ws = wb.active
 
-    start_row = 1
-    urls_col = 1
-    for col in range(1, ws.max_row + 1):
-        if ws.cell(row=1, column=col).value == None:
-            continue
-        for row in range(1, ws.max_row + 1):
-            if ws.cell(row=row, column=col).value[:8] == 'https://':
+
+    row_count = 0
+    for row in range(1, ws.max_row + 1):
+        cell_value = ws.cell(row=row, column=1).value
+        if cell_value is not None and str(cell_value).strip():
+            row_count += 1
+
+
+    start_row = 0
+    urls_col = 0
+    for col in range(1, row_count + 1):
+        for row in range(1, row_count + 1):
+            cell_url = ws.cell(row=row, column=col).value
+            cell_value = ws.cell(row=row, column=col+1).value
+            if isinstance(cell_url, str) and cell_url.startswith('https://') and not cell_value:
                 start_row = row
                 urls_col = col
                 break
 
-    target_col = urls_col+1
+    if start_row == 0:
+        return [[start_row, urls_col], 0]
 
-    for row in range(start_row, ws.max_row + 1):
-        url = ws.cell(row=row, column=urls_col).value
-        value = parse_value_by_title(url, title_text)
-        if (value):
-            ws.cell(row=row, column=target_col).value = value
-        else:
-            ws.cell(row=row, column=target_col).value = '>/<'
-        time.sleep(random.uniform(45, 75))
+    return [[start_row, urls_col], row_count-start_row + 1]
 
 
-    # Если имя выходного файла не указано — создаём автоматически
-    if not output_file:
-        name, ext = os.path.splitext(input_file)
-        output_file = f"{name}_parsed{ext}"
+def save_cell(input_file: str, cell: list[int, int], value: str):
+    wb = load_workbook(input_file)
+    ws = wb.active
+    ws.cell(row=cell[0], column=cell[1] + 1).value = value
+    wb.save(input_file)
 
-    wb.save(output_file)
-    print(f"✅ Готово! Файл сохранён как: {output_file}")
 
+def cell_value(input_file: str, cell: list[int, int]):
+    wb = load_workbook(input_file)
+    ws = wb.active
+
+    return ws.cell(row=cell[0], column=cell[1]).value
 
 
