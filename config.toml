@@ -1,4 +1,4 @@
 [settings]
 debug = true
-TTS = 60
+sleep_time = 5
 title = "text_title"

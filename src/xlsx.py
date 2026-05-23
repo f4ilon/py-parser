@@ -1,9 +1,4 @@
 from openpyxl import load_workbook
-import random
-import time
-import sys
-import os
-
 
 
 def xlsx_info(input_file: str):

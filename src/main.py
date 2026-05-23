@@ -2,7 +2,7 @@ from pathlib import Path
 from tqdm import tqdm
 import tomllib
 import time 
-import sys
+import random
 
 
 from parser import parse_value_by_title, parse_all_pairs
@@ -47,7 +47,7 @@ def init():
 def get_input_files():
     files = get_xlsx('input')
     if not files:
-        print("Нет файлов для обработки.")
+        print("Нет файлов для обработки")
         input()
         exit()
     elif len(files) % 10 == 1:
@@ -87,9 +87,9 @@ def main():
 
     for file in queue:
         parse(file)
-
-    
-
+        print("Все файлы обработаны")
+        input()
+        exit()
 
 
 if __name__ == '__main__':
