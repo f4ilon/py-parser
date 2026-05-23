@@ -1,0 +1,4 @@
+[settings]
+debug = true
+TTS = 60
+title = "text_title"
