@@ -87,9 +87,9 @@ def main():
 
     for file in queue:
         parse(file)
-        print("Все файлы обработаны")
-        input()
-        exit()
+    print("Все файлы обработаны")
+    input()
+    exit()
 
 
 if __name__ == '__main__':
