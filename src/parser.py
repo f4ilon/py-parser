@@ -5,8 +5,11 @@
 
 import requests
 from bs4 import BeautifulSoup
-import argparse
+import urllib3
 import sys
+
+
+urllib3.disable_warnings()
 
 
 def parse_value_by_title(url: str, title_text: str) -> str | None:
@@ -25,7 +28,7 @@ def parse_value_by_title(url: str, title_text: str) -> str | None:
     }
     
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, verify=False, timeout=10)
         response.raise_for_status()
         response.encoding = response.apparent_encoding
     except requests.RequestException as e:
@@ -74,7 +77,7 @@ def parse_all_pairs(url: str) -> dict:
     }
     
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, verify=False, timeout=10)
         response.raise_for_status()
         response.encoding = response.apparent_encoding
     except requests.RequestException as e:
